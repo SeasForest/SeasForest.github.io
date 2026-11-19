@@ -8,7 +8,7 @@ import { mountDiagrams } from './diagrams';
 const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-mountDiagrams();
+mountDiagrams(reduced);
 
 // top bar + z ruler: scrolling the page is moving through its layers
 const top = $('.top');
