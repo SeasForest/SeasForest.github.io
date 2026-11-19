@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "tsc --noEmit && vite build",
-    "start": "vite preview --host 0.0.0.0 --port 4180 --strictPort"
+    "start": "vite preview --host 0.0.0.0 --port ${PORT:-4180} --strictPort"
   },
   "keywords": [],
   "author": "",

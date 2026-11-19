@@ -122,6 +122,13 @@ void main() {
     spec = pow(max(dot(n, H), 0.0), 48.0) * smoothstep(0.0, 0.06, 1.0 - n.z) * (1.0 - sh);
   }
 
+  // ---------- job preview: the pending outline, like a CAM canvas before the run
+  {
+    float hair = 1.0 - smoothstep(0.0, fwidth(d) * 1.1 + 1e-5, abs(d));
+    float still = 1.0 - smoothstep(0.0005, 0.004, abs(z));
+    col = mix(col, uInk, hair * still * 0.3);
+  }
+
   // ---------- 01 cut: kerf follows the real contour order
   if (uA.x > 0.001) {
     float rev = step(t, uP.x);
