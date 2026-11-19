@@ -147,8 +147,11 @@ h2 { font-family: var(--display); font-weight: 900; font-size: clamp(38px, 5.6vw
 .diagram .glow { fill: var(--accent); opacity: 0.2; }
 .diagram.mini { width: clamp(150px, 14vw, 210px); aspect-ratio: 96 / 56; margin-bottom: 18px; }
 
-/* pipeline (dark) */
+/* production workflow */
 .dark { background: var(--text); color: var(--bg); --border: rgba(226, 227, 224, 0.2); --text-muted: #a4a9ad; }
+.production-flow svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* legacy pipeline diagrams */
 .pipe { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); counter-reset: none; }
 .pipe li { padding: 28px clamp(16px, 2vw, 30px) 34px; border-left: 1px solid var(--border); position: relative; }
 .pipe li:first-child { border-left: 0; padding-left: 0; }
@@ -179,6 +182,22 @@ h2 { font-family: var(--display); font-weight: 900; font-size: clamp(38px, 5.6vw
 .links .name { font-family: var(--display); font-weight: 900; font-size: clamp(24px, 3.6vw, 56px); line-height: 1.25; letter-spacing: -0.02em; overflow-wrap: anywhere; }
 .links .go { font-size: 24px; text-align: right; transition: transform 0.35s var(--ease), color 0.2s; }
 .links a:hover .go { transform: translate(4px, -4px); color: var(--accent); }
+
+/* capability quadrant */
+.capability-map { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px 0; }
+.quadrants { position: relative; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--text); }
+.quadrant { position: relative; min-height: clamp(250px, 23vw, 340px); padding: clamp(20px, 2.6vw, 40px); display: flex; flex-direction: column; justify-content: flex-end; }
+.quadrant:nth-child(odd) { border-right: 1px solid var(--text); }
+.quadrant:nth-child(-n + 2) { border-bottom: 1px solid var(--text); }
+.quadrant .diagram.mini { position: absolute; top: clamp(20px, 2.6vw, 40px); right: clamp(20px, 2.6vw, 40px); margin: 0; }
+.quadrant span { position: absolute; top: clamp(20px, 2.6vw, 40px); left: clamp(20px, 2.6vw, 40px); font-family: var(--mono); font-stretch: 87%; font-size: 12px; color: var(--hot); }
+.quadrant h3 { font-family: var(--display); font-weight: 900; font-size: clamp(26px, 3.4vw, 50px); line-height: 1.1; letter-spacing: -0.02em; }
+.quadrant p { margin-top: 10px; font-size: clamp(14px, 1.15vw, 17px); color: var(--text-muted); }
+.axis { display: flex; justify-content: space-between; font-family: var(--mono); font-stretch: 87%; font-size: 12px; color: var(--text-muted); }
+.axis i, .axis b { font-style: normal; font-weight: 500; }
+.axis b { color: var(--text); }
+.axis-y { writing-mode: vertical-rl; text-orientation: upright; flex-direction: row-reverse; letter-spacing: 0.12em; }
+.axis-x { grid-column: 2; }
 
 /* contact */
 .contact { background: var(--hot); color: var(--text); padding: clamp(72px, 10vw, 150px) var(--gut) clamp(60px, 8vw, 110px); }
@@ -228,6 +247,13 @@ h2 { font-family: var(--display); font-weight: 900; font-size: clamp(38px, 5.6vw
   .tabs button { padding: 11px 9px 10px; }
   .tabs button span { font-size: 9px; }
   .axes .status { margin-left: 0; width: 100%; }
+  .capability-map { grid-template-columns: 24px minmax(0, 1fr); }
+  .quadrant { min-height: 220px; padding: 16px 14px; }
+  .quadrant span { top: 16px; left: 14px; }
+  .quadrant .diagram.mini { top: 40px; left: 14px; right: auto; width: 110px; }
+  .quadrant h3 { font-size: 24px; }
+  .quadrant p { font-size: 13px; line-height: 1.55; }
+  .axis { font-size: 10.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

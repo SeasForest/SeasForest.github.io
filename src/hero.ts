@@ -137,7 +137,7 @@ export class Hero {
   private build() {
     const w = this.stage.clientWidth;
     const small = w < 760;
-    const lines = this.twoLine ? ['SEAS', 'FOREST'] : ['SEAS FOREST'];
+    const lines = ['SEASYLVAN'];
     const texW = small ? 1024 : 2048;
     const geo = (this.geo = buildWord(this.font, lines, texW, this.twoLine ? 7.4 : 10));
     const N = geo.texW * geo.texH;

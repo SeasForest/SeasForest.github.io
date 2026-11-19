@@ -377,7 +377,127 @@ const reuse: Def = {
   },
 };
 
-const all: Record<string, Def> = { cut, engrave, relief, print, geo, nest, gcode, desktop, chain, trade, reuse };
+const craft: Def = {
+  vb: [96, 56], dur: 6, still: 0.7,
+  build(svg) {
+    const rows = [14, 26, 38].map((y) => h('path', { class: 's a', d: `M6 ${y}H40`, 'stroke-dasharray': 34 }, svg));
+    const layers = [0, 1, 2, 3].map((i) => h('path', { class: 's h', style: 'stroke-width:5', d: `M${58 + i * 2} ${46 - i * 9}H${90 - i * 2}` }, svg));
+    const hd = head(svg);
+    return (t) => {
+      const r = Math.min(2.999, t * 3.4), i = Math.floor(r), f = r - i;
+      rows.forEach((el, k) => el.setAttribute('stroke-dashoffset', String(34 * (1 - (k < i ? 1 : k === i ? f : 0)))));
+      at(hd, i % 2 ? 40 - 34 * f : 6 + 34 * f, 14 + i * 12);
+      layers.forEach((el, k) => (el.style.opacity = String(clamp(t * 5 - k))));
+    };
+  },
+};
+
+// ---------------------------------------------------------------- scope: one continuous production chain
+const production: Def = {
+  vb: [1000, 330], dur: 15, still: 0.5,
+  build(svg) {
+    const V = matchMedia('(max-width: 700px)').matches;
+    if (V) svg.setAttribute('viewBox', '0 0 360 800');
+    const S = [
+      ['几何输入', '轮廓 / 网格 / 图像'],
+      ['工艺规划', '排样 / 参数 / 约束'],
+      ['路径生成', '路径 / G-code'],
+      ['设备执行', '运动 / 激光 / 挤出'],
+      ['结果验证', '精度 / 质量 / 反馈'],
+    ];
+    const L = S.map((_, i) => (V
+      ? { nx: 16, ny: 36 + i * 150, tx: 40, ty: 20 + i * 150, ix: 214, iy: 6 + i * 150 }
+      : { nx: 100 + i * 200, ny: 104, tx: 35 + i * 200, ty: 22, ix: 35 + i * 200, iy: 162 }));
+    const N = L.length - 1;
+    h('path', { class: 's thin', d: `M${L[0].nx} ${L[0].ny}L${L[N].nx} ${L[N].ny}` }, svg);
+    const done = h('path', { class: 's h', style: 'stroke-width:2' }, svg);
+    const fb = h('path', { class: 's thin dash', d: V
+      ? `M${L[N].ix + 65} ${L[N].iy + 96}V786H4V${L[1].ny}H${L[1].nx - 8}`
+      : `M${L[N].nx} ${L[N].iy + 96}V300H${L[1].nx}V${L[1].iy + 100}` }, svg);
+    const fbL = fb.getTotalLength();
+    h('text', V ? { x: 180, y: 778, style: 'text-anchor:middle;font-size:10px' } : { x: (L[1].nx + L[N].nx) / 2, y: 320, style: 'text-anchor:middle;font-size:11px' }, svg, '结果反馈 → 修正工艺规划');
+    const ui = S.map(([title, sub], i) => {
+      const l = L[i], g = h('g', {}, svg);
+      h('text', { x: l.tx, y: l.ty, style: 'font-size:11px;fill:var(--hot);opacity:1' }, g, `0${i + 1}`);
+      h('text', { x: l.tx, y: l.ty + 32, style: `font-family:var(--font);font-size:${V ? 19 : 21}px;font-weight:800;opacity:1` }, g, title);
+      h('text', { x: l.tx, y: l.ty + (V ? 54 : 118), style: `font-family:var(--font);font-size:${V ? 11 : 12}px` }, g, sub);
+      const node = h('circle', { class: 's bgf', cx: l.nx, cy: l.ny, r: 6 }, svg);
+      const d = h('g', { transform: `translate(${l.ix} ${l.iy})` }, g);
+      let up: Tick = () => {};
+      if (i === 0) {
+        const o = h('path', { class: 's a', d: 'M8 78V34H48V14H98A24 24 0 0 1 122 38V78Z' }, d), len = o.getTotalLength();
+        o.setAttribute('stroke-dasharray', String(len));
+        const hole = h('circle', { class: 's a', cx: 94, cy: 46, r: 10 }, d);
+        const pts = [[8, 78], [8, 34], [48, 14], [122, 38], [122, 78]].map(([x, y]) => h('rect', { class: 's bgf', x: x - 3, y: y - 3, width: 6, height: 6 }, d));
+        up = (q) => {
+          o.setAttribute('stroke-dashoffset', String(len * (1 - q)));
+          hole.style.opacity = String(seg(0.7, 1, q));
+          pts.forEach((el, k) => (el.style.opacity = String(seg(k / 6, k / 6 + 0.15, q))));
+        };
+      } else if (i === 1) {
+        h('rect', { class: 's thin', x: 2, y: 8, width: 126, height: 76 }, d);
+        const parts = [
+          h('path', { class: 's a', d: 'M8 14H50V44H30V78H8Z' }, d),
+          h('path', { class: 's a', d: 'M56 14H122V40H56Z' }, d),
+          h('circle', { class: 's a', cx: 52, cy: 62, r: 14 }, d),
+          h('path', { class: 's a', d: 'M74 48H122V78H74Z' }, d),
+        ];
+        up = (q) => parts.forEach((el, k) => {
+          const e = 1 - ease(seg(k * 0.2, k * 0.2 + 0.4, q));
+          el.setAttribute('transform', `translate(${f1((k % 2 ? 26 : -18) * e)} ${f1(-30 * e)}) rotate(${f1((k % 2 ? 24 : -18) * e)} 65 46)`);
+          el.style.opacity = String(1 - e * 0.85);
+        });
+      } else if (i === 2) {
+        const o = h('path', { class: 's a', d: 'M6 12H124V26H6V40H124V54H6V68H124' }, d), len = o.getTotalLength();
+        o.setAttribute('stroke-dasharray', String(len));
+        const code = h('text', { x: 6, y: 88, style: 'font-size:9px;opacity:1' }, d, '');
+        up = (q) => {
+          o.setAttribute('stroke-dashoffset', String(len * (1 - q)));
+          const pt = o.getPointAtLength(len * q);
+          code.textContent = `G1 X${f1(pt.x)} Y${f1(pt.y)} F900`;
+        };
+      } else if (i === 3) {
+        h('path', { class: 's thin', d: 'M4 84H126' }, d);
+        const rows = [0, 1, 2, 3, 4].map((k) => h('path', { class: 's h', style: 'stroke-width:6', d: `M${22 + k * 3} ${76 - k * 9}H${108 - k * 3}`, 'stroke-dasharray': 90 }, d));
+        const noz = h('path', { class: 's bgf', d: 'M-9 -22H9V-8L0 0L-9 -8Z' }, d);
+        up = (q) => {
+          const r = Math.min(4.999, q * 5), k = Math.floor(r), f = r - k, w = 86 - k * 6;
+          rows.forEach((el, j) => el.setAttribute('stroke-dashoffset', String(90 - (j < k ? 90 : j === k ? w * f : 0))));
+          at(noz, 22 + k * 3 + w * f, 72 - k * 9);
+        };
+      } else {
+        h('path', { class: 's', d: 'M14 80V44H50V28H94A22 22 0 0 1 116 50V80Z' }, d);
+        h('path', { class: 's thin', d: 'M14 14V22M116 14V22M14 18H116' }, d);
+        const ok = h('path', { class: 's h', style: 'stroke-width:3', d: 'M50 58L62 70L86 44', 'stroke-dasharray': 54 }, d);
+        const scan = h('path', { class: 's a thin', d: 'M0 24V84' }, d);
+        up = (q) => {
+          at(scan, 14 + 102 * ease(seg(0, 0.6, q)), 0);
+          scan.style.opacity = q >= 1 ? '0' : '0.8';
+          ok.setAttribute('stroke-dashoffset', String(54 * (1 - seg(0.6, 0.95, q))));
+        };
+      }
+      return { g, node, up };
+    });
+    const pulse = head(svg, 'fh');
+    return (t) => {
+      const W = 0.17, r = Math.min(4.999, t / W), act = Math.floor(r), u = r - act;
+      let x = L[act].nx, y = L[act].ny;
+      if (act > 0 && u < 0.2) { const e = ease(u / 0.2); x = L[act - 1].nx + (x - L[act - 1].nx) * e; y = L[act - 1].ny + (y - L[act - 1].ny) * e; }
+      done.setAttribute('d', `M${L[0].nx} ${L[0].ny}L${f1(x)} ${f1(y)}`);
+      const back = seg(0.87, 0.99, t);
+      if (back > 0) { const pt = fb.getPointAtLength(fbL * ease(back)); x = pt.x; y = pt.y; }
+      at(pulse, x, y);
+      ui.forEach((s, i) => {
+        const q = i < act ? 1 : i === act ? seg(0.2, 0.92, u) : 0;
+        s.up(q);
+        s.g.style.opacity = i === act && back === 0 ? '1' : i < act || back > 0 ? '0.72' : '0.34';
+        s.node.classList.toggle('h', i <= act);
+      });
+    };
+  },
+};
+
+const all: Record<string, Def> = { cut, engrave, relief, print, geo, nest, gcode, desktop, chain, trade, reuse, craft, production };
 
 export function mountDiagrams(reduced: boolean) {
   const live = new Map<Element, { def: Def; tick: Tick; t0: number; on: boolean }>();
