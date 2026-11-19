@@ -17,8 +17,8 @@
         <span>Seas Forest</span>
       </a>
       <nav aria-label="页面导航">
-        <a href="#process">工艺</a>
-        <a href="#pipeline">链路</a>
+        <a href="#responsibility">职责</a>
+        <a href="#expertise">能力</a>
         <a href="#approach">方法</a>
         <a href="#work">作品</a>
         <a href="#contact">联系</a>
@@ -34,14 +34,12 @@
 
         <div class="hero-grid">
           <div class="hero-copy">
-            <h1 id="hero-title">几何进，<br />实物出。</h1>
-            <p class="lede">
-              Seas Forest，3D 打印行业软件工程师。主场是 2D 激光打印与雕刻，日常也做 3D 雕刻与打印。
-            </p>
+            <p class="eyebrow">Seas Forest · 3D 打印行业软件开发工程师</p>
+            <h1 id="hero-title">把制造工艺，<br />做成可靠的软件。</h1>
           </div>
 
           <div class="console" aria-label="工艺演示控制台">
-            <p class="console-note">同一份字形轮廓，实时走四种工艺</p>
+            <p class="console-note">工艺仿真 · 同一轮廓，四种加工方式</p>
             <div class="tabs" role="tablist" aria-label="选择工艺">
               <button role="tab" data-mode="0" aria-selected="true"><b>切割</b><span>2D 矢量</span></button>
               <button role="tab" data-mode="1" aria-selected="false"><b>雕刻</b><span>2D 光栅</span></button>
@@ -60,28 +58,69 @@
             </div>
           </div>
         </div>
+        <dl class="spec" aria-label="概况">
+          <div><dt>行业</dt><dd>消费级 3D 打印 · 桌面制造</dd></div>
+          <div><dt>核心领域</dt><dd><a href="#expertise">2D 激光切割、雕刻与打印</a></dd></div>
+          <div><dt>延伸领域</dt><dd><a href="#expertise">3D 雕刻与 3D 打印</a></dd></div>
+          <div><dt>职责范围</dt><dd><a href="#responsibility">几何 → 排样 → 路径 → 桌面软件</a></dd></div>
+        </dl>
       </section>
 
-      <section class="section" id="process" aria-labelledby="process-title">
+      <section class="section dark responsibility" id="responsibility" aria-labelledby="responsibility-title">
         <div class="section-head">
-          <h2 id="process-title">同一份几何，<br />四种做法</h2>
+          <p class="eyebrow"><b>01</b>职责范围<i>Scope</i></p>
+          <h2 id="responsibility-title">从几何到机器，<br />负责完整软件链路</h2>
+          <p class="sum">算法、工艺与硬件，在同一条链路上闭环。</p>
+        </div>
+        <ol class="pipe">
+          <li>
+            <div class="diagram" data-diagram="geo"></div>
+            <span class="step">1</span>
+            <h3>几何与拓扑</h3>
+            <p>建立稳定的数据基础</p>
+          </li>
+          <li>
+            <div class="diagram" data-diagram="nest"></div>
+            <span class="step">2</span>
+            <h3>排样与工艺</h3>
+            <p>平衡材料利用率与加工约束</p>
+          </li>
+          <li>
+            <div class="diagram" data-diagram="gcode"></div>
+            <span class="step">3</span>
+            <h3>路径与控制</h3>
+            <p>将工艺策略转化为机器可执行的指令</p>
+          </li>
+          <li>
+            <div class="diagram" data-diagram="desktop"></div>
+            <span class="step">4</span>
+            <h3>产品与交付</h3>
+            <p>面向终端用户，稳定、易用、可维护</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section" id="expertise" aria-labelledby="expertise-title">
+        <div class="section-head">
+          <p class="eyebrow"><b>02</b>专业能力<i>Expertise</i></p>
+          <h2 id="expertise-title">覆盖 2D 与 3D，<br />四类加工工艺</h2>
           <p class="legend" aria-label="图例"><span><i class="k a"></i>激光</span><span><i class="k h"></i>耗材</span></p>
         </div>
 
         <div class="dim" data-dim="2d">
           <div class="dim-label">
             <strong>2D</strong>
-            <span>平面 · 主力方向</span>
-            <small>俯视图</small>
+            <span>核心领域</span>
+            <small>VECTOR / RASTER</small>
           </div>
           <article class="proc">
             <div class="diagram" data-diagram="cut"></div>
-            <h3>激光切割 <em>沿轮廓切断</em></h3>
+            <h3>矢量切割 <em>轮廓路径 · 先内孔后外形</em></h3>
             <code data-code aria-hidden="true"></code>
           </article>
           <article class="proc">
             <div class="diagram" data-diagram="engrave"></div>
-            <h3>激光雕刻与打印 <em>逐行扫描成像</em></h3>
+            <h3>光栅加工 <em>双向扫描 · 灰度成像</em></h3>
             <code data-code aria-hidden="true"></code>
           </article>
         </div>
@@ -89,81 +128,54 @@
         <div class="dim" data-dim="3d">
           <div class="dim-label">
             <strong>3D</strong>
-            <span>立体 · 日常涉及</span>
-            <small>剖面图</small>
+            <span>延伸领域</span>
+            <small>SUBTRACTIVE / ADDITIVE</small>
           </div>
           <article class="proc">
             <div class="diagram" data-diagram="relief"></div>
-            <h3>3D 雕刻 <em>一遍遍烧出深度</em></h3>
+            <h3>三维雕刻 <em>分层下切 · 多遍加工</em></h3>
             <code data-code aria-hidden="true"></code>
           </article>
           <article class="proc">
             <div class="diagram" data-diagram="print"></div>
-            <h3>3D 打印 <em>一层层堆出实体</em></h3>
+            <h3>增材制造 <em>逐层堆积 · 挤出路径</em></h3>
             <code data-code aria-hidden="true"></code>
           </article>
         </div>
       </section>
 
-      <section class="section dark" id="pipeline" aria-labelledby="pipeline-title">
+      <section class="section approach" id="approach" aria-labelledby="approach-title">
         <div class="section-head">
-          <h2 id="pipeline-title">从图纸到机器，<br />中间这一段归我</h2>
+          <p class="eyebrow"><b>03</b>工作方法<i>Approach</i></p>
+          <h2 id="approach-title">对系统结果负责，<br />不止于功能实现</h2>
+          <p class="sum">判断有依据，结论可复用。</p>
         </div>
-        <ol class="pipe">
-          <li>
-            <div class="diagram" data-diagram="geo"></div>
-            <span class="step">1</span>
-            <h3>几何内核</h3>
-            <p>后面每一步，都靠它可靠。</p>
-          </li>
-          <li>
-            <div class="diagram" data-diagram="nest"></div>
-            <span class="step">2</span>
-            <h3>排样</h3>
-            <p>省料，也守住加工约束。</p>
-          </li>
-          <li>
-            <div class="diagram" data-diagram="gcode"></div>
-            <span class="step">3</span>
-            <h3>路径与 G-code</h3>
-            <p>把加工意图翻译给机器。</p>
-          </li>
-          <li>
-            <div class="diagram" data-diagram="desktop"></div>
-            <span class="step">4</span>
-            <h3>桌面软件</h3>
-            <p>交到用户手里，稳定顺手。</p>
-          </li>
-        </ol>
-      </section>
-
-      <section class="section creed" id="approach" aria-labelledby="creed-title">
-        <blockquote>
-          <p id="creed-title" lang="en">Good engineering is calm, quiet, and reliable.</p>
-          <footer>好的工程，沉着、安静、可靠。</footer>
-        </blockquote>
         <ul class="creed-list">
           <li>
             <div class="diagram mini" data-diagram="chain"></div>
-            <h3>管整条链路</h3>
-            <p>2D 与 3D，从几何到机器。</p>
+            <span class="index">01</span>
+            <h3>系统视角</h3>
+            <p>以完整链路定义问题边界，避免局部最优。</p>
           </li>
           <li>
             <div class="diagram mini" data-diagram="trade"></div>
-            <h3>做技术判断</h3>
-            <p>精度、速度、成本，取舍有依据。</p>
+            <span class="index">02</span>
+            <h3>技术决策</h3>
+            <p>在精度、效率、稳定性与成本之间做有依据的取舍。</p>
           </li>
           <li>
             <div class="diagram mini" data-diagram="reuse"></div>
-            <h3>沉淀成方法</h3>
-            <p>把经验写成规范与 AI skill。</p>
+            <span class="index">03</span>
+            <h3>工程沉淀</h3>
+            <p>将经验固化为规范、工具与可复用的工作流。</p>
           </li>
         </ul>
       </section>
 
-      <section class="section" id="work" aria-labelledby="work-title">
+      <section class="section evidence" id="work" aria-labelledby="work-title">
         <div class="section-head">
-          <h2 id="work-title">作品与写作</h2>
+          <p class="eyebrow"><b>04</b>公开作品<i>Work</i></p>
+          <h2 id="work-title">项目与写作</h2>
         </div>
         <ul class="links">
           <li>
@@ -191,7 +203,7 @@
       </section>
 
       <section class="contact" id="contact" aria-labelledby="contact-title">
-        <h2 id="contact-title">聊聊几何、路径，<br />或者一台需要软件的机器。</h2>
+        <h2 id="contact-title">合作与机会，<br />欢迎联系。</h2>
         <a class="mail" href="mailto:seasforest@outlook.com">seasforest@outlook.com</a>
         <div class="contact-row">
           <a href="https://x.com/seasylvan" target="_blank" rel="noopener">X · @seasylvan</a>
@@ -202,7 +214,7 @@
 
     <footer class="foot">
       <span>© 2026 Seas Forest</span>
-      <span>页面上的图都是实时计算的</span>
+      <span>DIGITAL FABRICATION · SOFTWARE SYSTEMS</span>
     </footer>
 
     <div class="zruler" aria-hidden="true"><i id="zmark"></i><span id="zval">Z 0.0</span></div>
