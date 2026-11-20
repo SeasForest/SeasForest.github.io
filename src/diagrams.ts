@@ -497,7 +497,45 @@ const production: Def = {
   },
 };
 
-const all: Record<string, Def> = { cut, engrave, relief, print, geo, nest, gcode, desktop, chain, trade, reuse, craft, production };
+// ---------------------------------------------------------------- product: camera-aligned multi-process job
+const suite: Def = {
+  vb: [240, 170], dur: 10, still: 0.9,
+  build(svg) {
+    h('rect', { class: 's', x: 14, y: 16, width: 212, height: 138, rx: 3 }, svg);
+    h('path', { class: 's thin dash', d: 'M58 40H172L196 66V132H74L58 114Z' }, svg);
+    const finder = h('path', { class: 's h', d: 'M50 46V32H64M182 32H204V52M204 124V140H186M70 140H50V124' }, svg);
+    const scan = h('path', { class: 's h thin', d: 'M0 22V148' }, svg);
+    const job = h('g', {}, svg);
+    const rows = [0, 1, 2, 3, 4, 5].map((i) => h('path', { class: 's a thin', d: `M12 ${14 + i * 6}H${i % 2 ? 50 : 58}`, 'stroke-dasharray': 46 }, job));
+    const pen = h('path', { class: 's', d: 'M12 58q8 -10 16 0t16 0t16 0' }, job), penLen = pen.getTotalLength();
+    pen.setAttribute('stroke-dasharray', String(penLen));
+    const outline = h('path', { class: 's a', d: 'M0 0H72A10 10 0 0 1 82 10V70H0Z' }, job), len = outline.getTotalLength();
+    outline.setAttribute('stroke-dasharray', String(len));
+    const hd = head(job);
+    return (t) => {
+      const seen = seg(0.02, 0.2, t), put = ease(seg(0.22, 0.4, t)), eng = seg(0.42, 0.62, t), draw = seg(0.64, 0.74, t), cutp = seg(0.76, 0.95, t);
+      at(scan, 14 + 212 * seen, 0);
+      scan.style.opacity = seen > 0 && seen < 1 ? '0.9' : '0';
+      finder.style.opacity = String(seen);
+      job.setAttribute('transform', `translate(${f1(30 + 54 * put)} ${f1(66 - 16 * put)}) rotate(${f1(-10 * (1 - put))} 41 35)`);
+      job.style.opacity = String(0.35 + 0.65 * put);
+      rows.forEach((el, i) => el.setAttribute('stroke-dashoffset', String(46 * (1 - clamp(eng * 6 - i)))));
+      pen.setAttribute('stroke-dashoffset', String(penLen * (1 - draw)));
+      outline.setAttribute('stroke-dashoffset', String(cutp > 0 ? len * (1 - cutp) : 0));
+      outline.classList.toggle('dash', cutp === 0);
+      outline.setAttribute('stroke-dasharray', cutp > 0 ? String(len) : '3 4');
+      let x = 12, y = 14, on = true;
+      if (cutp > 0) { const pt = outline.getPointAtLength(len * cutp); x = pt.x; y = pt.y; }
+      else if (draw > 0) { const pt = pen.getPointAtLength(penLen * draw); x = pt.x; y = pt.y; }
+      else if (eng > 0) { const r = Math.min(5.999, eng * 6), i = Math.floor(r), f = r - i, w = i % 2 ? 38 : 46; x = i % 2 ? 12 + w * (1 - f) : 12 + w * f; y = 14 + i * 6; }
+      else on = false;
+      at(hd, x, y);
+      hd.style.opacity = on && cutp < 1 ? '1' : '0';
+    };
+  },
+};
+
+const all: Record<string, Def> = { cut, engrave, relief, print, geo, nest, gcode, desktop, chain, trade, reuse, craft, production, suite };
 
 export function mountDiagrams(reduced: boolean) {
   const live = new Map<Element, { def: Def; tick: Tick; t0: number; on: boolean }>();
