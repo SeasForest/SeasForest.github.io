@@ -300,3 +300,13 @@ h2 { font-family: var(--display); font-weight: 900; font-size: clamp(38px, 5.6vw
   .spec > div + div { border-top: 1px solid var(--border); }
   .spec dd { margin: 0; }
 }
+
+/* copy refresh */
+.hero-copy .lede { max-width: 26em; color: var(--text-muted); text-wrap: balance; }
+.links .name { text-wrap: balance; }
+.section-head .sum { max-width: 26em; }
+.quadrant p { max-width: 21em; text-wrap: balance; }
+.links .name small { display: block; margin-top: 6px; font-family: var(--font); font-weight: 500; font-size: clamp(14px, 1.1vw, 16px); line-height: 1.5; letter-spacing: 0; color: var(--text-muted); }
+@media (max-width: 600px) {
+  .quadrant { min-height: 250px; }
+}
