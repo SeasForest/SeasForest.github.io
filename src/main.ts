@@ -28,6 +28,69 @@ addEventListener('scroll', onScroll, { passive: true });
 addEventListener('resize', onScroll);
 onScroll();
 
+// reveal blocks as they enter the viewport; the inline fallback timer is no longer needed
+clearTimeout((window as unknown as { __reveal?: number }).__reveal);
+const revealIO = new IntersectionObserver((es) => {
+  es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    revealIO.unobserve(e.target);
+  });
+}, { rootMargin: '0px 0px -12% 0px', threshold: 0.05 });
+document.querySelectorAll('[data-reveal]').forEach((el) => revealIO.observe(el));
+
+// mark the section in view in the nav
+const navLinks = [...document.querySelectorAll<HTMLAnchorElement>('.top nav a')];
+const navIO = new IntersectionObserver((es) => {
+  es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    navLinks.forEach((a) => {
+      if (a.hash === `#${e.target.id}`) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  });
+}, { rootMargin: '-45% 0px -50% 0px' });
+navLinks.forEach((a) => { const t = document.querySelector(a.hash); if (t) navIO.observe(t); });
+
+// crosshair that trails the pointer; over the stage it reads out a position
+const cursor = $('.cursor');
+if (!reduced && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  const label = cursor.querySelector('span')!;
+  const stage = $('#stage');
+  let tx = 0, ty = 0, cx = 0, cy = 0, moving = false;
+  const follow = () => {
+    cx += (tx - cx) * 0.22;
+    cy += (ty - cy) * 0.22;
+    cursor.style.transform = `translate(${cx.toFixed(1)}px, ${cy.toFixed(1)}px)`;
+    if (Math.abs(tx - cx) + Math.abs(ty - cy) > 0.2) requestAnimationFrame(follow);
+    else moving = false;
+  };
+  let queued = false;
+  const probe = () => {
+    queued = false;
+    const el = document.elementFromPoint(tx, ty);
+    cursor.classList.toggle('link', !!el?.closest('a, button'));
+    const r = stage.getBoundingClientRect();
+    const over = ty >= r.top && ty <= r.bottom;
+    cursor.classList.toggle('read', over);
+    if (over) label.textContent = `X ${((tx - r.left) * 0.2).toFixed(1)}  Y ${((r.bottom - ty) * 0.2).toFixed(1)}`;
+  };
+  addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    tx = e.clientX;
+    ty = e.clientY;
+    if (!cursor.classList.contains('on')) { cx = tx; cy = ty; cursor.classList.add('on'); }
+    probe();
+    if (!moving) { moving = true; requestAnimationFrame(follow); }
+  }, { passive: true });
+  addEventListener('scroll', () => {
+    if (queued || !cursor.classList.contains('on')) return;
+    queued = true;
+    requestAnimationFrame(probe);
+  }, { passive: true });
+  document.documentElement.addEventListener('pointerleave', () => cursor.classList.remove('on'));
+}
+
 // hero
 const tabs = [...document.querySelectorAll<HTMLButtonElement>('.tabs button')];
 const consoleEl = $('.console');

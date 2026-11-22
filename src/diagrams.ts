@@ -1,6 +1,6 @@
 // Every figure on the page is a small simulation: a tick(t) function redraws it for t in 0..1.
 type Tick = (t: number) => void;
-interface Def { vb: [number, number]; dur: number; still: number; build(svg: SVGSVGElement, code: HTMLElement | null): Tick }
+interface Def { vb: [number, number]; dur: number; still: number; scrub?: boolean; build(svg: SVGSVGElement, code: HTMLElement | null): Tick }
 
 const NS = 'http://www.w3.org/2000/svg';
 type Attrs = Record<string, string | number>;
@@ -394,7 +394,7 @@ const craft: Def = {
 
 // ---------------------------------------------------------------- scope: one continuous production chain
 const production: Def = {
-  vb: [1000, 330], dur: 15, still: 0.5,
+  vb: [1000, 330], dur: 15, still: 0.5, scrub: true,
   build(svg) {
     const V = matchMedia('(max-width: 700px)').matches;
     if (V) svg.setAttribute('viewBox', '0 0 360 800');
@@ -539,6 +539,7 @@ const all: Record<string, Def> = { cut, engrave, relief, print, geo, nest, gcode
 
 export function mountDiagrams(reduced: boolean) {
   const live = new Map<Element, { def: Def; tick: Tick; t0: number; on: boolean }>();
+  const scrubbed: { el: HTMLElement; tick: Tick }[] = [];
   let raf = 0;
   const frame = (now: number) => {
     raf = 0;
@@ -564,8 +565,36 @@ export function mountDiagrams(reduced: boolean) {
     el.appendChild(svg);
     const tick = def.build(svg, el.parentElement!.querySelector<HTMLElement>('[data-code]'));
     tick(def.still);
+    if (def.scrub && !reduced) { scrubbed.push({ el, tick }); return; }
     live.set(el, { def, tick, t0: -1, on: false });
     if (!reduced) io.observe(el);
   });
   document.addEventListener('visibilitychange', kick);
+
+  // scrubbed figures are driven by scroll position instead of time
+  let queued = false;
+  const scrub = () => {
+    queued = false;
+    const vh = innerHeight;
+    scrubbed.forEach(({ el, tick }) => {
+      const pin = el.closest<HTMLElement>('.pin');
+      const r = el.getBoundingClientRect();
+      let t: number;
+      if (pin && getComputedStyle(pin.firstElementChild!).position === 'sticky') {
+        const pr = pin.getBoundingClientRect();
+        t = 0.03 + 0.96 * clamp(-pr.top / (pr.height - vh));
+      } else if (r.height > r.width) {
+        t = clamp(((vh * 0.6 - r.top) / r.height - 0.03) * 0.92);
+      } else {
+        t = clamp((vh * 0.85 - r.top) / (vh * 0.7));
+      }
+      tick(t);
+    });
+  };
+  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(scrub); } };
+  if (scrubbed.length) {
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    scrub();
+  }
 }
