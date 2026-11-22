@@ -7,6 +7,10 @@
     <meta name="description" content="Seasylvan，3D 打印行业软件工程师。做把设计转换成加工指令的软件：几何、排样、路径与 G-code，覆盖 2D 激光加工、3D 雕刻与 3D 打印。" />
     <meta name="theme-color" content="#e2e3e0" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181b'/%3E%3Cpath d='M6 21h20M6 16h20' stroke='%23e2e3e0' stroke-width='2.4'/%3E%3Cpath d='M6 11h20' stroke='%23ff5310' stroke-width='2.4'/%3E%3C/svg%3E" />
+    <script>
+      document.documentElement.classList.add('js');
+      window.__reveal = setTimeout(function () { document.documentElement.classList.add('reveal-all'); }, 5000);
+    </script>
   </head>
   <body>
     <a class="skip" href="#responsibility">跳到正文</a>
@@ -33,13 +37,13 @@
         </div>
 
         <div class="hero-grid">
-          <div class="hero-copy">
+          <div class="hero-copy" data-reveal>
             <p class="eyebrow">Seasylvan · 3D 打印行业软件工程师</p>
-            <h1 id="hero-title">让设计，<br />精确地成为实物。</h1>
+            <h1 id="hero-title"><span class="ln"><span>让设计，</span></span><span class="ln"><span>精确地成为实物。</span></span></h1>
             <p class="lede">专注制造软件，将设计转换为机器可执行的加工指令，驱动激光与增材设备完成制造。</p>
           </div>
 
-          <div class="console" aria-label="工艺演示控制台">
+          <div class="console" aria-label="工艺演示控制台" data-reveal>
             <p class="console-note">实时演示 · 同一轮廓的四种加工方式，可点击切换</p>
             <div class="tabs" role="tablist" aria-label="选择工艺">
               <button role="tab" data-mode="0" aria-selected="true"><b>切割</b><span>2D 矢量</span></button>
@@ -59,7 +63,7 @@
             </div>
           </div>
         </div>
-        <dl class="spec" aria-label="概况">
+        <dl class="spec" aria-label="概况" data-reveal>
           <div><dt>行业</dt><dd>工业激光加工 · 消费级 3D 打印</dd></div>
           <div><dt>核心方向</dt><dd><a href="#expertise">2D 激光切割、雕刻与打印</a></dd></div>
           <div><dt>延伸方向</dt><dd><a href="#expertise">3D 雕刻与 3D 打印</a></dd></div>
@@ -68,13 +72,13 @@
       </section>
 
       <section class="section products" id="products" aria-labelledby="products-title">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
           <p class="eyebrow"><b>01</b>参与产品<i>Products</i></p>
-          <h2 id="products-title">两类产品，<br />一条制造主线</h2>
+          <h2 id="products-title"><span class="ln"><span>两类产品，</span></span><span class="ln"><span>一条制造主线</span></span></h2>
           <p class="sum">从工业激光套料，到多工艺桌面制造：持续解决的都是如何把设计可靠地交给机器。</p>
         </div>
         <div class="product-list">
-          <article class="product-row">
+          <article class="product-row" data-reveal>
             <div class="product-no">01</div>
             <div class="product-title">
               <span>工业激光加工</span>
@@ -90,7 +94,7 @@
               </ul>
             </div>
           </article>
-          <article class="product-row">
+          <article class="product-row" data-reveal>
             <div class="product-no">02</div>
             <div class="product-title">
               <span>桌面数字制造</span>
@@ -110,21 +114,26 @@
       </section>
 
       <section class="section dark responsibility" id="responsibility" aria-labelledby="responsibility-title">
-        <div class="section-head">
-          <p class="eyebrow"><b>02</b>职责范围<i>Scope</i></p>
-          <h2 id="responsibility-title">从一份设计，<br />到一件实物</h2>
-          <p class="sum">覆盖几何解析、工艺规划、路径生成与设备执行，并以加工结果持续校正工艺。</p>
+        <div class="pin">
+          <div class="pin-inner">
+            <div class="section-head" data-reveal>
+              <p class="eyebrow"><b>02</b>职责范围<i>Scope</i></p>
+              <h2 id="responsibility-title"><span class="ln"><span>从一份设计，</span></span><span class="ln"><span>到一件实物</span></span></h2>
+              <p class="sum">覆盖几何解析、工艺规划、路径生成与设备执行，并以加工结果持续校正工艺。</p>
+            </div>
+            <div class="production-flow diagram" data-diagram="production" role="img" aria-label="工作链路：几何输入（轮廓、网格、图像），工艺规划（排样、参数、约束），路径生成（路径、G-code），设备执行（运动、激光、挤出），结果验证（精度、质量、反馈）；验证结果反馈回工艺规划。"></div>
+      
+          </div>
         </div>
-        <div class="production-flow diagram" data-diagram="production" role="img" aria-label="工作链路：几何输入（轮廓、网格、图像），工艺规划（排样、参数、约束），路径生成（路径、G-code），设备执行（运动、激光、挤出），结果验证（精度、质量、反馈）；验证结果反馈回工艺规划。"></div>
       </section>
 
       <section class="section" id="expertise" aria-labelledby="expertise-title">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
           <p class="eyebrow"><b>03</b>专业能力<i>Expertise</i></p>
-          <h2 id="expertise-title">懂工艺，<br />也对系统负责</h2>
+          <h2 id="expertise-title"><span class="ln"><span>懂工艺，</span></span><span class="ln"><span>也对系统负责</span></span></h2>
           <p class="sum">横轴从单一工艺到整个系统，纵轴从动手实现到做出决定。</p>
         </div>
-        <div class="capability-map">
+        <div class="capability-map" data-reveal>
           <span class="axis axis-y" aria-hidden="true"><i>技术实现</i><b>↑工程负责</b></span>
           <div class="quadrants">
             <article class="quadrant">
@@ -157,11 +166,11 @@
       </section>
 
       <section class="section evidence" id="work" aria-labelledby="work-title">
-        <div class="section-head">
+        <div class="section-head" data-reveal>
           <p class="eyebrow"><b>04</b>公开作品<i>Work</i></p>
-          <h2 id="work-title">项目与写作</h2>
+          <h2 id="work-title"><span class="ln"><span>项目与写作</span></span></h2>
         </div>
-        <ul class="links">
+        <ul class="links" data-reveal>
           <li>
             <a href="https://github.com/SeasForest/pit-wall-roast" target="_blank" rel="noopener">
               <span class="kind">AI skill</span>
@@ -186,8 +195,8 @@
         </ul>
       </section>
 
-      <section class="contact" id="contact" aria-labelledby="contact-title">
-        <h2 id="contact-title">欢迎交流制造软件，<br />也欢迎新的机会。</h2>
+      <section class="contact" id="contact" aria-labelledby="contact-title" data-reveal>
+        <h2 id="contact-title"><span class="ln"><span>欢迎交流制造软件，</span></span><span class="ln"><span>也欢迎新的机会。</span></span></h2>
         <a class="mail" href="mailto:seasforest@outlook.com">seasforest@outlook.com</a>
         <div class="contact-row">
           <a href="https://x.com/seasylvan" target="_blank" rel="noopener">X · @seasylvan</a>
@@ -201,6 +210,7 @@
       <span lang="en">Good engineering is calm, quiet, and reliable.</span>
     </footer>
 
+    <div class="cursor" aria-hidden="true"><i></i><span></span></div>
     <div class="zruler" aria-hidden="true"><i id="zmark"></i><span id="zval">Z 0.0</span></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
